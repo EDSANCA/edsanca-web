@@ -1,0 +1,32 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import YouTube from './YouTube.astro';
+import { t, workPath, type Lang } from '../i18n/ui';
+
+interface Props { project: CollectionEntry<'projects'>; lang: Lang }
+const { project, lang } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const summary = lang === 'es' ? d.summary_es : d.summary_en;
+const other: Lang = lang === 'es' ? 'en' : 'es';
+---
+<Base lang={lang} title={d.title} description={summary} altPath={workPath(other, project.id)}>
+  <article>
+    <p><a href={workPath(lang)}>← {t(lang, 'back')}</a></p>
+    <span class="label">{d.client} · {t(lang, `category.${d.category}`)}{d.year ? ` · ${d.year}` : ''}</span>
+    <h1>{d.title}</h1>
+    <p class="summary">{summary}</p>
+    {d.youtube && <YouTube id={d.youtube} title={d.title} label={t(lang, 'video.play')} />}
+    {d.stack.length > 0 && <ul class="stack">{d.stack.map((s) => <li>{s}</li>)}</ul>}
+    <div class="body"><Content /></div>
+  </article>
+</Base>
+<style>
+  article{display:flex;flex-direction:column;gap:16px;padding-block:32px;max-width:960px}
+  h1{margin:0;font-family:var(--display);font-weight:900;font-size:clamp(40px,7vw,88px);line-height:.9;text-transform:uppercase}
+  .summary{margin:0;font-size:20px;max-width:50ch}
+  .stack{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+  .stack li{font-family:var(--mono);font-size:12px;border:1px solid var(--rule);padding:2px 8px}
+  .body{max-width:65ch}
+</style>

@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import { t, workPath, type Lang } from '../i18n/ui';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const featured = projects.find((p) => p.data.featured);
+const rest = projects.filter((p) => p !== featured);
+---
+<section class="hero">
+  <h1 class="name">Edu<br />Santamar<span>.ia</span></h1>
+  <p class="line">{t(lang, 'hero.line')}</p>
+</section>
+
+{featured && (
+  <section class="featured">
+    <span class="label">{t(lang, 'work.featured')}</span>
+    <ProjectCard project={featured} lang={lang} large />
+  </section>
+)}
+
+<section id="work">
+  <h2>{t(lang, 'work.title')}</h2>
+  <div class="grid">{rest.map((p) => <ProjectCard project={p} lang={lang} />)}</div>
+  <p><a href={workPath(lang)}>{t(lang, 'work.title')} →</a></p>
+</section>
+
+<section id="contact">
+  <h2>{t(lang, 'nav.contact')}</h2>
+  <p>edsanca@gmail.com</p>
+</section>
+
+<style>
+  .hero{padding-block:clamp(40px,8vw,96px) 32px;display:flex;flex-direction:column;gap:20px}
+  .name{margin:0;font-family:var(--display);font-weight:900;font-size:clamp(40px,10vw,128px);line-height:.88;text-transform:uppercase}
+  .name span{color:var(--accent-ink)}
+  .line{margin:0;font-size:clamp(18px,2.2vw,24px);max-width:36ch}
+  section{padding-block:40px 0}
+  h2{font-family:var(--display);font-weight:900;font-size:clamp(28px,4vw,48px);text-transform:uppercase;margin:0 0 20px;border-bottom:1px solid var(--ink);padding-bottom:10px}
+  .featured{display:flex;flex-direction:column;gap:10px}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 24px}
+  @media (max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:600px){.grid{grid-template-columns:1fr}}
+</style>

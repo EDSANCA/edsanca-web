@@ -49,6 +49,12 @@ El juego de palabras "Santamar.ia" forma parte de la marca.
 - Referencia visual: le gusta el estilo de diegodali.com (inspiración, no copia). Falta ver la web por capturas o con el navegador.
 - Confirmar si Red Festival y el juego de la Feria pueden anunciarse ya.
 
+## Estado técnico
+
+- Esqueleto inicial escrito a mano: en la sesión de Claude donde se creó, el registro de npm estaba bloqueado, así que no se pudo ejecutar `npm install` ni `astro build`. La primera compilación real será en Cloudflare: revisar ese log y corregir lo que falle.
+- Estructura: `src/content/projects/*.md` (un archivo por proyecto, ver EDITAR.md), `src/i18n/ui.ts` (textos de interfaz EN/ES), `src/components/` (Home, ProjectCard, ProjectPage, WorkIndex, YouTube ligero), rutas EN en `/` y `/work/`, ES en `/es/` y `/es/trabajo/`.
+- Estilos provisionales en `src/styles/global.css`, pendientes de la dirección visual definitiva.
+
 ## Referencias
 
 - Maqueta de dirección visual (primera propuesta, estética de croma azul): artifact "Edsanca Home" en claude.ai.

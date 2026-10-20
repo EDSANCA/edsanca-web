@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { t, workPath, type Lang } from '../i18n/ui';
+
+interface Props { project: CollectionEntry<'projects'>; lang: Lang; large?: boolean }
+const { project, lang, large = false } = Astro.props;
+const d = project.data;
+const thumb = d.youtube ? `https://i.ytimg.com/vi/${d.youtube}/hqdefault.jpg` : null;
+---
+<a class:list={['card', { large }]} href={workPath(lang, project.id)}>
+  <div class="frame">
+    {thumb ? <img src={thumb} alt="" loading="lazy" width="480" height="360" /> : <span class="slate">{d.title}</span>}
+  </div>
+  <span class="label">{d.client} · {t(lang, `category.${d.category}`)}{d.year ? ` · ${d.year}` : ''}</span>
+  <h3>{d.title}</h3>
+  <p>{lang === 'es' ? d.summary_es : d.summary_en}</p>
+</a>
+<style>
+  .card{display:flex;flex-direction:column;gap:10px;text-decoration:none;min-width:0}
+  .frame{aspect-ratio:16/10;max-width:100%;background:var(--accent);color:var(--on-accent);overflow:hidden;display:flex;align-items:flex-end;padding:0}
+  .large .frame{aspect-ratio:21/9}
+  .frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .slate{padding:16px;font-family:var(--display);font-weight:900;font-size:clamp(24px,3vw,36px);line-height:.9;text-transform:uppercase}
+  h3{margin:0;font-size:20px;line-height:1.2}
+  p{margin:0;color:var(--ink-2);font-size:15px}
+</style>

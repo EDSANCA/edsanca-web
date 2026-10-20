@@ -1,0 +1,14 @@
+/* Provisional: se rediseña cuando llegue la referencia visual. */
+:root{
+  --paper:#EDEFF1; --paper-2:#E1E4E8; --ink:#0E1116; --ink-2:#4B5360; --rule:#C5CAD2;
+  --accent:#1B3BFF; --on-accent:#F4F6FF; --accent-ink:#1B3BFF;
+  --display:"Arial Narrow",Impact,sans-serif; --body:system-ui,-apple-system,"Segoe UI",sans-serif; --mono:ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root{--paper:#0D0F13;--paper-2:#161A20;--ink:#E8EBEF;--ink-2:#9AA3AF;--rule:#2A3039;--accent:#2A47FF;--accent-ink:#8C9DFF;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;padding-inline:clamp(16px,4vw,48px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto}
+.label{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+h1,h2,h3{text-wrap:balance}

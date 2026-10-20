@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import { t, homePath, workPath, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; title?: string; description?: string; altPath?: string }
+const { lang, title, description, altPath } = Astro.props;
+const pageTitle = title ? `${title} · Edsanca` : 'Edsanca · Edu Santamaría, AI-native realizador';
+const desc = description ?? t(lang, 'meta.description');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const otherLang: Lang = lang === 'en' ? 'es' : 'en';
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Edu Santamaría',
+  alternateName: 'Edsanca',
+  jobTitle: lang === 'es' ? 'Realizador audiovisual' : 'Film realizador',
+  url: 'https://www.edsanca.com',
+  homeLocation: { '@type': 'Place', name: 'Madrid, Spain' },
+  sameAs: ['https://www.instagram.com/edsanca'],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    {altPath && <link rel="alternate" hreflang={otherLang} href={new URL(altPath, Astro.site)} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  </head>
+  <body>
+    <header class="wrap site-header">
+      <a class="mark" href={homePath(lang)}>EDSANCA<span>.</span></a>
+      <nav aria-label="Main">
+        <a href={workPath(lang)}>{t(lang, 'nav.work')}</a>
+        <a href={`${homePath(lang)}#contact`}>{t(lang, 'nav.contact')}</a>
+        {altPath && <a href={altPath} hreflang={otherLang}>{otherLang.toUpperCase()}</a>}
+      </nav>
+    </header>
+    <main class="wrap"><slot /></main>
+    <footer class="wrap site-footer">
+      <span>Edsanca · Edu Santamaría · Madrid</span>
+      <a href="https://www.instagram.com/edsanca">Instagram</a>
+    </footer>
+  </body>
+</html>
+<style is:global>
+  .site-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px;padding-block:16px;border-bottom:1px solid var(--rule)}
+  .site-header nav{display:flex;flex-wrap:wrap;gap:6px 18px}
+  .site-header nav a{text-decoration:none;font-weight:500}
+  .mark{font-family:var(--display);font-weight:900;font-size:22px;text-decoration:none}
+  .mark span{color:var(--accent-ink)}
+  .site-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:96px;padding-block:24px 40px;border-top:1px solid var(--rule);color:var(--ink-2);font-size:14px}
+</style>
