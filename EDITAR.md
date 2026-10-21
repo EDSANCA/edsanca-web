@@ -13,6 +13,7 @@ category: advertising          ← advertising, music-video, fiction, personal o
 summary_en: Texto en inglés.   ← una o dos frases
 summary_es: Texto en español.
 youtube: dQw4w9WgXcQ           ← solo el código del vídeo (lo que va después de watch?v=)
+vimeo: 778622747              ← o, si está en Vimeo, solo el número del vídeo (usa uno de los dos)
 stack: [Runway, Seedance]      ← herramientas o roles (opcional)
 featured: false                ← true = aparece grande arriba en la home (solo uno)
 order: 10                      ← orden: números más bajos salen antes

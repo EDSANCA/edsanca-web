@@ -12,6 +12,8 @@ const projects = defineCollection({
     summary_en: z.string(),
     summary_es: z.string(),
     youtube: z.string().optional(), // solo el ID del vídeo, p. ej. "dQw4w9WgXcQ"
+    vimeo: z.string().optional(), // solo el número del vídeo, p. ej. "778622747"
+    poster: z.string().optional(), // portada del vídeo, p. ej. "/img/boiler-feelings.jpg"
     stack: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     order: z.number().default(100),

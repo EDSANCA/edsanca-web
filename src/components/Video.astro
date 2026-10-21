@@ -1,0 +1,43 @@
+---
+// Vídeo incrustado y ligero: se reproduce dentro de la página, sin salir de la web.
+// YouTube (sin cookies) o Vimeo. Solo carga el reproductor cuando alguien pulsa play.
+interface Props {
+  provider: 'youtube' | 'vimeo';
+  id: string;
+  title: string;
+  label: string;
+  poster?: string; // imagen de portada opcional (ruta en /public), si no hay se usa la de YouTube
+}
+const { provider, id, title, label, poster } = Astro.props;
+const thumb = poster ?? (provider === 'youtube' ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : undefined);
+---
+<div class="vid" data-provider={provider} data-id={id} data-title={title}>
+  <button type="button" aria-label={`${label}: ${title}`}>
+    {thumb && <img src={thumb} alt="" loading="lazy" width="1280" height="720" />}
+    <span class="play" aria-hidden="true"></span>
+  </button>
+</div>
+<style>
+  .vid{position:relative;aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
+  .vid button{all:unset;cursor:pointer;position:absolute;inset:0;display:block}
+  .vid button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .vid img{width:100%;height:100%;object-fit:cover;display:block}
+  .play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+  .play::before{content:"";border-style:solid;border-width:12px 0 12px 20px;border-color:transparent transparent transparent var(--on-accent);margin-left:5px}
+  .vid :global(iframe){position:absolute;inset:0;width:100%;height:100%;border:0}
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('.vid').forEach((el) => {
+    el.querySelector('button')?.addEventListener('click', () => {
+      const { provider, id, title } = el.dataset;
+      const f = document.createElement('iframe');
+      f.src = provider === 'vimeo'
+        ? `https://player.vimeo.com/video/${id}?autoplay=1&dnt=1`
+        : `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      f.title = title ?? '';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      el.replaceChildren(f);
+    });
+  });
+</script>

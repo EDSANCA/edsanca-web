@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import YouTube from './YouTube.astro';
+import Video from './Video.astro';
 import { t, workPath, type Lang } from '../i18n/ui';
 
 interface Props { project: CollectionEntry<'projects'>; lang: Lang }
@@ -17,7 +17,8 @@ const other: Lang = lang === 'es' ? 'en' : 'es';
     <span class="label">{d.client} · {t(lang, `category.${d.category}`)}{d.year ? ` · ${d.year}` : ''}</span>
     <h1>{d.title}</h1>
     <p class="summary">{summary}</p>
-    {d.youtube && <YouTube id={d.youtube} title={d.title} label={t(lang, 'video.play')} />}
+    {d.youtube && <Video provider="youtube" id={d.youtube} poster={d.poster} title={d.title} label={t(lang, 'video.play')} />}
+    {!d.youtube && d.vimeo && <Video provider="vimeo" id={d.vimeo} poster={d.poster} title={d.title} label={t(lang, 'video.play')} />}
     {d.stack.length > 0 && <ul class="stack">{d.stack.map((s) => <li>{s}</li>)}</ul>}
     <div class="body"><Content /></div>
   </article>
